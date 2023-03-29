@@ -64,10 +64,9 @@ public class ChatRoom {
 	}
 
 	// Consider if this should be run asynchronously.
-	public synchronized void leaveRoom(User user) {
+	public void leaveRoom(User user) {
 		// Code for a User to leave a Chat Room.
 		users.remove(user);
-		notifyAll();
 		System.out.println("User " + user.getID() + " left Chat Room " + chatRoomID + ". (" + user.getWantToChat() + ")");
 	}
 
@@ -77,6 +76,10 @@ public class ChatRoom {
 
 	public int getID(){
 		return chatRoomID;
+	}
+
+	public boolean isFull(){
+		return users.size() == capacity;
 	}
 
 }

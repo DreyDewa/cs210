@@ -49,7 +49,9 @@ public class User implements Runnable {
 					joinedServer = true;
 				}
 				else{
-					wait();
+					while(chatServer.isFull()) {
+						wait();
+					}
 				}
 
 				} else if (!joinedMainRoom && chatServer.isRoomOpen(1)) {
@@ -63,6 +65,11 @@ public class User implements Runnable {
 					Thread.sleep((long) (randomSleep*sleepScale));
 					wantToChat =- (int)(randomSleep);
 					chatServer.leaveRoom(this, 1);
+					}
+					else{
+						while(chatServer.getRoom(0).isFull()) {
+							wait();
+						}
 					}
 				}			
 

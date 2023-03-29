@@ -35,7 +35,7 @@ public class ChatServer {
 	public synchronized void open() {
 		// Code to open the Chat Room.
 		isOpen = true;
-		notifyAll();
+		notify();
 		System.out.println("Chat Server is Opened.");
 	}
 	
@@ -84,7 +84,7 @@ public class ChatServer {
 		if (users.contains(user)){
 		System.out.println("User " + user.getID() + " left the Chat Server.");
 		users.remove(user);
-		notifyAll();
+		notify();
 		}
 		else{
 		System.out.println("Could not remove User " + user.getID() + " as is not in the Chat Server.");
@@ -127,11 +127,12 @@ public class ChatServer {
 			return bool;
 		}
 
-	public void leaveRoom(User user, int chatRoomID) {
+	public synchronized void leaveRoom(User user, int chatRoomID) {
 		// Code to allow user to leave Chat Room.
 		for (int x = 0; x < rooms.size(); x++){
 			if (rooms.get(x).getID() == chatRoomID){
 				rooms.get(x).leaveRoom(user);
+				notify();
 			}
 			}
 		
@@ -147,6 +148,14 @@ public class ChatServer {
 
 	public int getNumberOfUsers() {
 		return users.size();
+	}
+
+	public boolean isFull(){
+		return users.size() == capacity;
+	}
+
+	public ChatRoom getRoom(int id){
+		return rooms.get(id);
 	}
 
 }
